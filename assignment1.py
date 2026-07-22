@@ -20,21 +20,58 @@ class Library:
     def __init__(self):
         self.listOfBooks = []
         self.listOfPatrons =[]
+        self.available = []
     def addBook(self, name, book_id, author):
         b = Book(name, book_id, author)
-        self.listOfBooks.append(book_id)
+        self.listOfBooks.append(b)
+        self.available.append(book_id)
 
     def registerPatron(self, name, patron_id):
         p = Patron(name, patron_id)
-        self.listOfPatrons.append(patron_id)
+        self.listOfPatrons.append(p)
 
-    def Borrow(self, book, patron):
-        if book.book_id not in self.listOfBooks:
-            print("BOOK NOT AVAILABLE!\n")
+    def Borrow(self, book_id, patron_id):
+        patron_exists = False
+        for p in self.listOfPatrons:
+            if p.patron_id == patron_id:
+                patron_exists = True
+                if book_id not in self.available:
+                    print("BOOK NOT AVAILABLE!\n")
+                    return
+                p.booksBorrowed.append(book_id)
+                self.available.remove(book_id)
+        
+        if patron_exists == False:
+            print("PATRON_ID IS INVALID")
             return
-        
+    
+    def Return(self, book_id, patron_id):
+        patron_exists = False
+        for p in self.listOfPatrons:
+            if p.patron_id == patron_id:
+                patron_exists = True
+                if book_id not in p.booksBorrowed:
+                    print("NO RECORD OF BOOK BEING BORROWED\n")
+                    return
+                p.booksBorrowed.remove(book_id)
+                self.available.append(book_id)
+        if patron_exists == False:
+            print("PATRON_ID IS INVALID")
+            return
 
-        
+    def showBooks(self):
+        print("Available Books :\nBOOK NAME      AUTHOR NAME     BOOK_ID\n")
+        for i in self.available:
+            for j in self.listOfBooks:
+                if j.book_id == i:
+                    print(j.name, "     ", j.author, "      ", j.book_id, "\n")
+
+    def showPatrons(self):
+        print("Registered Patrons :\nNAME     PATRON_ID")
+        for i in self.listofPatrons:
+            print(i.name, "     ", i.patron_id)
+
+                   
     
 lib = Library()
 print("WELCOME TO LIBRARY MANAGEMENT SYSTEM\n")
@@ -45,13 +82,37 @@ while True:
         book_id = int(input("Enter the id for the book : \n"))
         author = str(input("Enter the name of author for the book : \n"))
         lib.addBook(name, book_id, author)
+        lib.showBooks()
     
     elif x == 2 :
         name = str(input("Enter the name of the Patron\n"))
         id = int(input("Enter the Patron Id no.\n"))
         lib.registerPatron(name, id)
+        lib.showPatrons()
     
     elif x == 3 :
+        p = Patron()
+        id = int(input("Enter the ID of the book you want to borrow : \n"))
+        p_id = int(input("Enter the patron ID no. : "))
+        for i in lib.listOfPatrons:
+            if i.patron_id == p_id:
+                lib.Borrow(id, i)
+                break
+    
+    elif x == 4:
+        p = Patron()
+        id = int(input("Enter the ID of the book you want to return : \n"))
+        p_id = int(input("Enter the patron ID no. : "))
+        for i in lib.listOfPatrons:
+            if i.patron_id == p_id:
+                lib.Return(id, i)
+                break
+        
+    elif x == 5:
+        print("\nGOODBYE\n")
+        break
+
+
 
 
 
