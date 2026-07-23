@@ -16,6 +16,13 @@ class Patron:
         self.name = name
         self.booksBorrowed = []
 
+    def showBooksBorrowed(self):
+        print("List of books borrowed by", self.name, " : ")
+        print("\nBook Name         Book ID\n")
+        for b in self.booksBorrowed:
+            print(b.name, "     ", b.book_id)
+        
+
 class Library:
     def __init__(self):
         self.listOfBooks = []
@@ -98,6 +105,9 @@ while True:
             if i.patron_id == p_id:
                 lib.Borrow(id, i)
                 break
+        lib.showBooks()
+        p.showBooksBorrowed()
+
     
     elif x == 4:
         p = Patron()
@@ -107,11 +117,11 @@ while True:
             if i.patron_id == p_id:
                 lib.Return(id, i)
                 break
-        
+        lib.showBooks()
+        p.showBooksBorrowed()
     elif x == 5:
         print("\nGOODBYE\n")
         break
-
 
 
 
