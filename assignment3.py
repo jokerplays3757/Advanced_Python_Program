@@ -1,20 +1,23 @@
 #Assignment 3 : Write a program to implement a Configurable Payment Processing System using the Strategy Pattern.
-
 class netBanking:
 
-    def payment(self):
+    def payment(self, amount):
+        print("Payment Amount = ", amount)
         print("Payment made using Net Banking")
 
 class UPI:
-    def payment(self):
+    def payment(self, amount):
+        print("Payment Amount = ", amount)
         print("Payment made using UPI")
 
 class credit:
-    def payment(self):
+    def payment(self, amount):
+        print("Payment Amount = ", amount)
         print("Payment made using Credit Card")
 
 class debit:
-    def payment(self):
+    def payment(self, amount):
+        print("Payment Amount = ", amount)
         print("Payment made using Debit Card")
 
 class Transaction:
@@ -23,17 +26,25 @@ class Transaction:
 
         self.mode = mode
 
-    def pay(self):
+    def pay(self, amount):
 
-        self.mode.payment()
+        self.mode.payment(amount)
 
-payment1 = Transaction(netBanking())
-payment2 = Transaction(UPI())
-payment3 = Transaction(credit())
-payment4 = Transaction(debit())
+amount = int(input("Enter the payment amount : "))
+choice = int(input("Enter the payment method : \n1. Net Banking\n2. UPI\n3. Credit Card\n4. Debit Card\n> "))
 
-payment1.pay()
-payment2.pay()
-payment3.pay()
-payment4.pay()
+
+if choice == 1:
+    payment = Transaction(netBanking())
+
+elif choice == 2:
+    payment = Transaction(UPI())
+
+elif choice == 3:
+    payment = Transaction(credit())
+
+elif choice == 4:
+    payment = Transaction(debit())
+
+payment.pay(amount)
 
